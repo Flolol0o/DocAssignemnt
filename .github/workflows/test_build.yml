@@ -18,7 +18,6 @@ jobs:
           java-version: '21'
       - name: Start PostgreSQL
         uses: docker://postgres:14.1
-        with:
         env:
           POSTGRES_DB: doc-db
           POSTGRES_USER: postgres
