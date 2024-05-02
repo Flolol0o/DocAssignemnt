@@ -19,9 +19,9 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=doc-db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: doc-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       
   backend:
     image: 'devops-demo:v404'
