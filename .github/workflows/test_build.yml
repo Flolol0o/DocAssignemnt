@@ -22,7 +22,6 @@ jobs:
           POSTGRES_DB: doc-db
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-        timeout-minutes: 3
       - name: Run Tests
         run: | 
           sleep 10
