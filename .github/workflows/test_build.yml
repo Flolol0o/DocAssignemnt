@@ -19,8 +19,8 @@ jobs:
       - name: Start PostgreSQL
         uses: docker://postgres:14.1
         with:
-          args: -e POSTGRES_DB=doc-db
         env:
+          POSTGRES_DB: doc-db
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         timeout-minutes: 2
