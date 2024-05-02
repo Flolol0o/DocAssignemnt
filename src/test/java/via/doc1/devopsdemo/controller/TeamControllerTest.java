@@ -36,5 +36,17 @@ public class TeamControllerTest {
 
     @Test
     public void getTaskDetailsTest() {
+        Mockito.when(teamService.getTask(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(mockTask);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/members/Member1/tasks/Task1")
+                .accept(MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+        System.out.println(result.getResponse());
+        String expected = "{\"id\":\"Task1\",\"name\":\"IoT Pipeline\",\"description\":\"Create CD pipeline for IoT component\"}";
+
+        JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
     }
 }

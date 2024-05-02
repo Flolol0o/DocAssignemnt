@@ -8,6 +8,8 @@ class DevopsDemoApplicationTests {
 
     @Test
     public void contextLoads() {
+        boolean test = true;
+        assertEquals(true,test);
     }
 
 }
