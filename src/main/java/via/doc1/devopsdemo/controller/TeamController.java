@@ -25,7 +25,7 @@ public class TeamController {
     @GetMapping("/members/{memberId}")
     public TeamMember getTaskDetails(@PathVariable String memberId) 
     {
-        return teamService.getTeamMember2(memberId);
+        return teamService.getTeamMember(memberId);
     }
 }
 
