@@ -1,4 +1,5 @@
 package via.doc1.devopsdemo.model;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,20 +7,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
-
-@Entity(name= "TeamMember")
-@Table(name= "team_member")
-
+@Entity(name = "TeamMember")
+@Table(name = "team_member")
 public class TeamMember {
-
-   @Id
+    @Id
     private String id;
     private String name;
     private String email;
     @OneToMany
     @JoinColumn(name = "team_member_id")
+
     @JsonIgnore
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks=new ArrayList<>();
+
+    public TeamMember(){
+    }
 
     public TeamMember(String id, String name, String email, List<Task> tasks) {
         this.id = id;

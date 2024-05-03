@@ -16,8 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import via.doc1.devopsdemo.model.Task;
 import via.doc1.devopsdemo.service.TeamService;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * @author jook
  * @version 1.0
@@ -37,7 +35,7 @@ public class TeamControllerTest {
     String jsonTask = "{\"name\":\"IoT Pipeline\",\"description\":\"Create CD pipeline for IoT service\"}";
 
     @Test
-    public void getTaskDetailsTest() throws Exception { // Add throws Exception to method signature
+    public void getTaskDetailsTest() throws Exception {
         Mockito.when(teamService.getTask(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(mockTask);
 

@@ -4,25 +4,32 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 
 @Entity(name="Task")
 @Table(name="task")
 
-
 public class Task {
-
     @Id
     private String id;
     private String name;
     private String description;
+
     @ManyToOne
-    @JoinColumn(name = "team_member_id", insertable = false, updatable = false)
+    @JoinColumn(name = "team_member_id", insertable = false,updatable = false)
     @JsonIgnore
     private TeamMember teamMember;
 
     public Task() {
+    }
+
+    public Task(TeamMember teamMember){
+        this.teamMember=teamMember;
     }
 
     public Task(String id, String name, String description) {
