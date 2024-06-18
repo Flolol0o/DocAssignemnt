@@ -2,7 +2,7 @@ version: "3.8"
 services:
 
   frontend:
-    image: "doc-react:version1.1"
+    image: "doc-react:v1.11"
     build:
       context: ./webapp
     container_name: 'react-demo-container'
@@ -12,7 +12,6 @@ services:
 
   db:
     image: "postgres:14.1-alpine"
-    restart: always
     container_name: "doc-pgsql-container"
     ports:
       - 5432:5432

@@ -22,7 +22,7 @@ spec:
         io.kompose.service: frontend
     spec:
       containers:
-        - image: doc-react:version1.1
+        - image: doc-react:v1.11
           name: react-demo-container
           ports:
             - containerPort: 3000

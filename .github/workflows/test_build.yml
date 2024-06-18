@@ -3,7 +3,7 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: [ Ci ]
+    branches: [ Github-Actions ]
 
 jobs:
   tests:
