@@ -1,6 +1,6 @@
 name: CD - Deploy to Minikube using Github Actions
 on:
-  #Trigger the workflow on push from the master/Github-Actions branch or on pull request
+  #Trigger the workflow on push from the master/Github-Actions branch or on pull request 
   push:
     branches: [ Github-Actions ]
   pull_request:
