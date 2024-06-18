@@ -23,6 +23,7 @@ spec:
     spec:
       containers:
         - image: doc-react:v1.11
+          imagePullPolicy: Never
           name: react-demo-container
           ports:
             - containerPort: 3000
