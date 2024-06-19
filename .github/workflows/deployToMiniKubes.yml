@@ -46,15 +46,7 @@ jobs:
         run: |
           kubectl apply -f frontend-deployment.yaml
           kubectl apply -f frontend-service.yaml
-#################################################
-      - name: Check backend pod status
-        run: kubectl get pods -l io.kompose.service=backend
 
-      - name: Describe backend pods
-        run: kubectl describe pods -l io.kompose.service=backend
-
-        
-################################################
       - name: Wait for backend to be ready
         run: kubectl wait --for=condition=Ready pod -l io.kompose.service=backend --timeout=120s
 
@@ -76,7 +68,7 @@ jobs:
           sleep 5
 
       - name: Test web service
-        run: curl -i http://localhost:3000/
+        run: curl -i http://127.0.0.1:3000/
 
       - name: Test backend service
         run: curl -i http://localhost:8080/
