@@ -53,20 +53,7 @@ jobs:
       - name: Describe backend pods
         run: kubectl describe pods -l io.kompose.service=backend
 
-        - name: Check Minikube status
-        run: minikube status
-
-      - name: Check kube-system pods
-        run: kubectl get pods -n kube-system
-
-      - name: Wait for all kube-system pods to be ready
-        run: |
-          kubectl wait --for=condition=Ready pod -l k8s-app=kube-dns -n kube-system --timeout=300s
-          kubectl get pods -n kube-system
-
-      - name: Get Minikube logs
-        run: minikube logs
-
+        
 ################################################
       - name: Wait for backend to be ready
         run: kubectl wait --for=condition=Ready pod -l io.kompose.service=backend --timeout=120s
