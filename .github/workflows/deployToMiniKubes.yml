@@ -64,11 +64,11 @@ jobs:
           echo "Forwarding ports..."
           kubectl port-forward service/backend 8080:8080 &> /dev/null &
           sleep 5
-          kubectl port-forward service/web 3000:3000 &> /dev/null &
+          kubectl port-forward service/frontend 3000:3000 &> /dev/null &
           sleep 5
 
       - name: Test web service
-        run: curl -i http://127.0.0.1:3000/
+        run: curl -i http://localhost:3000/
 
       - name: Test backend service
         run: curl -i http://localhost:8080/
