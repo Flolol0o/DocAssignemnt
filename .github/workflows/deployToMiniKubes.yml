@@ -26,8 +26,8 @@ jobs:
         run: |
           export SHELL=/bin/bash
           eval $(minikube -p minikube docker-env)
-          docker build -f ./Dockerfile -t java-backend:v405 .
-          docker build -f ./webapp/Dockerfile -t doc-react:v405 ./webapp
+          docker build -f ./Dockerfile -t devops-demo:v404 .
+          docker build -f ./webapp/Dockerfile -t doc-react:v1.11 ./webapp
           echo -n "Verifying images: "
           docker images
 
