@@ -46,7 +46,13 @@ jobs:
         run: |
           kubectl apply -f frontend-deployment.yaml
           kubectl apply -f frontend-service.yaml
+#################################################
+      - name: Check backend pod status
+        run: kubectl get pods -l io.kompose.service=backend
 
+      - name: Describe backend pods
+        run: kubectl describe pods -l io.kompose.service=backend
+################################################
       - name: Wait for backend to be ready
         run: kubectl wait --for=condition=Ready pod -l io.kompose.service=backend --timeout=1200s
 
