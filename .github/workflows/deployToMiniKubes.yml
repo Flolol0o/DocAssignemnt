@@ -64,6 +64,8 @@ jobs:
           echo "Forwarding ports..."
           kubectl port-forward service/backend 8080:8080 &> /dev/null &
           sleep 5
+          kubectl port-forward service/db 5432:5432 &> /dev/null &
+          sleep 5
           kubectl port-forward service/frontend 3000:3000 &> /dev/null &
           sleep 5
 
