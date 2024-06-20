@@ -16,6 +16,15 @@ COPY src /app/src
 # Run Maven to package the application, skipping the tests
 RUN mvn -B package --file pom.xml -DskipTests
 
+
+#This is a Multi-Stage Dockerfile: 
+#We are seperating:
+    #Build stage /\ uses maven to set up directory, copy dependencies and compile the sorce code;
+#From
+    #Production Stage \/ Eclipse Temurin JDK 21 on Alpine Linux as the runtime environment, exposes port 8080,
+    #defines a volume for persistent storage, copies the built JAR file, and sets the entry point to run the application
+
+    
 # Use the Eclipse Temurin JDK 21 on Alpine Linux as the runtime environment
 FROM eclipse-temurin:21-jdk-alpine
 
