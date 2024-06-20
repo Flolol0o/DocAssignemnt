@@ -1,12 +1,12 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    io.kompose.service: db
-  name: db
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
+apiVersion: v1  # API version used for the PersistentVolumeClaim
+kind: PersistentVolumeClaim  # Type of Kubernetes object, in this case, a PersistentVolumeClaim
+metadata:  # Metadata for the PersistentVolumeClaim
+  labels:  # Labels for the PersistentVolumeClaim
+    io.kompose.service: db  # Label to identify the service
+  name: db  # Name of the PersistentVolumeClaim
+spec:  # Specification of the PersistentVolumeClaim
+  accessModes:  # Access modes for the PersistentVolumeClaim
+    - ReadWriteOnce  # The volume can be mounted as read-write by a single node
+  resources:  # Resource requests for the PersistentVolumeClaim
+    requests:  # Resource requests
+      storage: 100Mi  # Request 100 MiB of storage

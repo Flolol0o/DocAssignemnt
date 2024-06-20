@@ -1,0 +1,44 @@
+name: CI  # Name of the GitHub Actions workflow
+
+on:
+  workflow_dispatch:  # Allows manual triggering of the workflow
+  push:
+    branches: [ Github-Actions ]  # Trigger on push to 'Github-Actions' branch
+
+jobs:
+  tests:
+    name: Unit tests  # Name of the 'tests' job
+    runs-on: ubuntu-latest  # Runs on Ubuntu latest version
+
+    steps:
+      - uses: actions/checkout@v4  # Checks out the repository's code
+
+      - name: Set up JDK 21  # Sets up JDK 21 for Java environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Run Tests  # Runs unit tests with Maven
+        run: | 
+          sleep 10  # Adds a sleep delay for any setup
+          mvn -B test  # Runs Maven test phase
+
+  build:
+    needs: tests  # Specifies that 'build' job depends on 'tests' job
+    name: Build  # Name of the 'build' job
+    runs-on: ubuntu-latest  # Runs on Ubuntu latest version
+
+    steps:
+      - uses: actions/checkout@v4  # Checks out the repository's code
+
+      - name: Set up JDK 21  # Sets up JDK 21 for Java environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Build with Maven  # Builds the project using Maven
+        run: mvn -B package -DskipTests --file pom.xml
+
+      - run: mkdir staging && cp target/*.jar staging  # Creates a staging directory and copies built JAR files into it

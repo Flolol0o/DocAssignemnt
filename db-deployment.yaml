@@ -1,47 +1,47 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.32.0 (765fde254)
-  labels:
-    io.kompose.service: db
-  name: db
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      io.kompose.service: db
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      annotations:
-        kompose.cmd: kompose convert
-        kompose.version: 1.32.0 (765fde254)
-      labels:
-        io.kompose.network/devops-demo-default: "true"
-        io.kompose.service: db
-    spec:
-      containers:
-        - env:
-            - name: POSTGRES_DB
-              value: doc-db
-            - name: POSTGRES_PASSWORD
-              value: postgres
-            - name: POSTGRES_USER
-              value: postgres
-          image: postgres:14.1-alpine
-          name: doc-pgsql-container
-          ports:
-            - containerPort: 5432
-              hostPort: 5432
-              protocol: TCP
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: db
-      restartPolicy: Always
-      volumes:
-        - name: db
-          persistentVolumeClaim:
-            claimName: db
+apiVersion: apps/v1  # API version used for the Deployment
+kind: Deployment  # Type of Kubernetes object, in this case, a Deployment
+metadata:  # Metadata for the Deployment
+  annotations:  # Annotations for additional information
+    kompose.cmd: kompose convert  # Command used to generate this file with Kompose
+    kompose.version: 1.32.0 (765fde254)  # Version of Kompose used
+  labels:  # Labels for the Deployment
+    io.kompose.service: db  # Label to identify the service
+  name: db  # Name of the Deployment
+spec:  # Specification of the Deployment
+  replicas: 1  # Number of pod replicas
+  selector:  # Selector to match pods managed by this Deployment
+    matchLabels:  # Labels for the selector
+      io.kompose.service: db  # Label to match the pods
+  strategy:  # Deployment strategy
+    type: Recreate  # Strategy type, recreate pods on changes
+  template:  # Template for the pod
+    metadata:  # Metadata for the pod
+      annotations:  # Annotations for additional information
+        kompose.cmd: kompose convert  # Command used to generate this file with Kompose
+        kompose.version: 1.32.0 (765fde254)  # Version of Kompose used
+      labels:  # Labels for the pod
+        io.kompose.network/devops-demo-default: "true"  # Network label
+        io.kompose.service: db  # Label to identify the service
+    spec:  # Specification of the pod
+      containers:  # List of containers in the pod
+        - env:  # Environment variables for the container
+            - name: POSTGRES_DB  # Name of the environment variable
+              value: doc-db  # Value of the environment variable
+            - name: POSTGRES_PASSWORD  # Name of the environment variable
+              value: postgres  # Value of the environment variable
+            - name: POSTGRES_USER  # Name of the environment variable
+              value: postgres  # Value of the environment variable
+          image: postgres:14.1-alpine  # Docker image for the container
+          name: doc-pgsql-container  # Name of the container
+          ports:  # Ports exposed by the container
+            - containerPort: 5432  # Port number inside the container
+              hostPort: 5432  # Port number on the host
+              protocol: TCP  # Protocol used for the port
+          volumeMounts:  # Volumes to mount in the container
+            - mountPath: /var/lib/postgresql/data  # Path to mount the volume
+              name: db  # Name of the volume
+      restartPolicy: Always  # Restart policy for the pod
+      volumes:  # List of volumes used by the pod
+        - name: db  # Name of the volume
+          persistentVolumeClaim:  # Persistent Volume Claim for the volume
+            claimName: db  # Name of the PersistentVolumeClaim

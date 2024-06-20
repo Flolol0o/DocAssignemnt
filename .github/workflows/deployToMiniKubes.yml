@@ -1,0 +1,81 @@
+name: CD - Deploy to Minikube using Github Actions
+
+on:
+  workflow_dispatch:  # Allows manual triggering of the workflow
+  push:
+    branches: [Github-Actions]  # Trigger on push to 'Github-Actions' branch
+  pull_request:
+    branches: [Github-Actions]  # Trigger on pull requests to 'Github-Actions' branch
+
+jobs:
+  job1:
+    name: Build and Deploy to Minikube
+    runs-on: ubuntu-latest  # Specifies the job runs on Ubuntu latest version
+
+    steps:
+      - uses: actions/checkout@v4  # Checks out the repository's code
+
+      - name: Start Minikube  # Starts Minikube for Kubernetes environment
+        id: minikube
+        uses: medyagh/setup-minikube@latest
+
+      - name: Try the cluster  # Tests Kubernetes cluster connectivity
+        run: kubectl get pods -A
+
+      - name: Build Image  # Builds Docker images for backend and web app
+        run: |
+          export SHELL=/bin/bash
+          eval $(minikube -p minikube docker-env)  # Sets up Docker environment for Minikube
+          docker build -f ./Dockerfile -t devops-demo:v404 .  # Builds backend Docker image
+          docker build -f ./webapp/Dockerfile -t doc-react:v1.11 ./webapp  # Builds web app Docker image
+          echo -n "Verifying images: "
+          docker images  # Lists Docker images to verify
+
+      - name: Deploy backend  # Deploys backend components to Kubernetes
+        run: |
+          kubectl apply -f backend-deployment.yaml  # Applies backend deployment configuration
+          kubectl apply -f backend-service.yaml  # Applies backend service configuration
+
+      - name: Deploy database  # Deploys database components to Kubernetes
+        run: |
+          kubectl apply -f db-persistentvolumeclaim.yaml  # Applies database persistent volume claim
+          kubectl apply -f db-deployment.yaml  # Applies database deployment configuration
+          kubectl apply -f db-service.yaml  # Applies database service configuration
+
+      - name: Deploy web  # Deploys web app components to Kubernetes
+        run: |
+          kubectl apply -f frontend-deployment.yaml  # Applies web app deployment configuration
+          kubectl apply -f frontend-service.yaml  # Applies web app service configuration
+
+      - name: Wait for backend to be ready  # Waits for backend pods to be ready
+        run: kubectl wait --for=condition=Ready pod -l io.kompose.service=backend --timeout=120s
+
+      - name: Wait for database to be ready  # Waits for database pods to be ready
+        run: kubectl wait --for=condition=Ready pod -l io.kompose.service=db --timeout=120s
+
+      - name: Wait for web to be ready  # Waits for web app pods to be ready
+        run: kubectl wait --for=condition=Ready pod -l io.kompose.service=frontend --timeout=120s
+
+      - name: Check all resources  # Displays all Kubernetes resources
+        run: kubectl get all
+
+      - name: Port forwarding  # Sets up port forwarding for local testing
+        run: |
+          echo "Forwarding ports..."
+          kubectl port-forward service/backend 8080:8080 &> /dev/null &  # Forwards backend service port
+          sleep 5
+          kubectl port-forward service/db 5432:5432 &> /dev/null &  # Forwards database service port
+          sleep 5
+          kubectl port-forward service/frontend 3000:3000 &> /dev/null &  # Forwards web app service port
+          sleep 5
+
+      - name: Test web service  # Tests web app service endpoint
+        run: curl -i http://localhost:3000/
+
+      - name: Test backend service  # Tests backend service endpoint
+        run: curl -i http://localhost:8080/
+
+      - name: Cleanup  # Cleans up after testing
+        run: |
+          eval $(minikube docker-env -u)  # Resets Docker environment
+          minikube delete  # Deletes Minikube cluster
